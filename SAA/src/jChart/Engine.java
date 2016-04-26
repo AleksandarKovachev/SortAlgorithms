@@ -26,6 +26,8 @@ public class Engine {
 
 		numbers = new ArrayList<Integer>();
 
+		Display.frame.addKeyListener(new HelpMenu());
+
 		Display.textField.addKeyListener(new KeyListener() {
 
 			@Override
@@ -40,6 +42,8 @@ public class Engine {
 			public void keyPressed(KeyEvent e) {
 				int keyCode = e.getKeyCode();
 				char ch = e.getKeyChar();
+
+				new HelpMenu().keyPressed(e);
 
 				if (keyCode == KeyEvent.VK_ENTER) {
 					if (Display.insert.getText().equals("")) {
@@ -72,17 +76,23 @@ public class Engine {
 				}
 			}
 		});
+
 		draw(numbers);
+
 		Display.sort.addActionListener(new buttonAction());
+
 		statistic();
 
 		Display.clear.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				draw(numbers);
-				buttonAction.setSorted(false);
-				SortAlgorithms.clear(SortAlgorithms.sortNumbers);
-				Display.sortNum.setText("");
+				if (!numbers.isEmpty()) {
+					draw(numbers);
+					buttonAction.setSorted(false);
+					SortAlgorithms.clear(SortAlgorithms.sortNumbers);
+					Display.sortNum.setText("");
+				}
 			}
 		});
 
@@ -90,25 +100,37 @@ public class Engine {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				numbers.clear();
-				SortAlgorithms.clear(SortAlgorithms.sortNumbers);
-				draw(numbers);
-				Display.textField.setVisible(true);
-				Display.statistic.setVisible(false);
-				Display.insert.setText("");
-				Display.sortNum.setText("");
-				buttonAction.sorted = false;
-				
-				Statistic.quicSorting.setText("........");
-				Statistic.bubbleSort.setText("........");
-				Statistic.cycleSort.setText("........");
-				Statistic.cocktailSort.setText("........");
-				Statistic.heapSort.setText("........");
-				Statistic.insertionSort.setText("........");
-				Statistic.selectionSort.setText("........");
-				Statistic.mergeSort.setText("........");
-				Statistic.shellSort.setText("........");
-				Statistic.oddevenSort.setText("........");
+				if (!numbers.isEmpty() && buttonAction.sorted) {
+					numbers.clear();
+					SortAlgorithms.clear(SortAlgorithms.sortNumbers);
+					draw(numbers);
+					Display.textField.setVisible(true);
+					Display.statistic.setVisible(false);
+					Display.insert.setText("");
+					Display.sortNum.setText("");
+					buttonAction.sorted = false;
+
+					Statistic.quicSorting.setText("........");
+					Statistic.bubbleSort.setText("........");
+					Statistic.cycleSort.setText("........");
+					Statistic.cocktailSort.setText("........");
+					Statistic.heapSort.setText("........");
+					Statistic.insertionSort.setText("........");
+					Statistic.selectionSort.setText("........");
+					Statistic.mergeSort.setText("........");
+					Statistic.shellSort.setText("........");
+					Statistic.oddevenSort.setText("........");
+				}
+			}
+		});
+
+		Display.back.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Display.panel.setVisible(true);
+				Display.viewPanel.setVisible(true);
+				Display.helpPanel.setVisible(false);
 			}
 		});
 	}

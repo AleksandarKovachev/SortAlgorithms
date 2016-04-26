@@ -8,19 +8,22 @@ import java.awt.Panel;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import org.jfree.data.category.DefaultCategoryDataset;
-
-import javafx.scene.layout.Border;
-import javax.swing.JPanel;
 
 public class Display {
 
@@ -42,8 +45,15 @@ public class Display {
 	public static JLabel sortLabel;
 	
 	public static JPanel viewPanel;
+	public static JPanel helpPanel;
+	
+	public static JButton back;
 	
 	private static JScrollPane sortNumbers;
+	
+	private static JTextPane help;
+	private String text;
+	private ImageIcon ic;
 
 	private JScrollPane scrollNumbers;
 
@@ -57,7 +67,6 @@ public class Display {
 		frame = new JFrame("Синтез и анализ на алгоритми");
 		
 		panel = new Panel();
-		panel.setBackground(Color.GRAY);
 		panel.setBounds(10, 180, 780, 460);
 		panel.setLayout(new BorderLayout(0, 0));
 
@@ -124,6 +133,54 @@ public class Display {
 			e.printStackTrace();
 		}
 		
+		try {
+			ic = new ImageIcon(ImageIO.read(ResourceLoader.load("resources/back.png")));
+			
+			
+			back = new JButton();
+			back.setIcon(ic);
+			back.setBounds(width/2, 10, ic.getIconWidth(), ic.getIconHeight());
+			back.setVisible(true);
+			
+			back.setOpaque(false);
+			back.setBorderPainted(false);
+			back.setContentAreaFilled(false);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		text = new String("Това е помщно меню.\n"
+				+ "Програмата показва различни методи за сортиране.\n"
+				+ "Въвеждането става чрез натискането на копчето 'Enter' в текстовото поле.\n"
+				+ "Позволено е въвеждането само на целочислени числа.\n"
+				+ "След въвеждането на числата се избира даден алгоритъм за сортиране и се натиска бутона 'Сортирай'.\n"
+				+ "Появява се бутон 'Статистика', който показва времето за изпълнение на алгоритъма.\n"
+				+ "За да се изпробва нов алгоритъм, трябва да се натисне бутона 'Изчисти'\n"
+				+ "Бутона 'Нулирай' позволява въвеждането на нова редица от числа.\n\n\n\n\n\n\n\n\n\n\n"
+				+ "Александър Николаев Ковачев\n"
+				+ "50 група, 501214024, ФКСУ");
+		
+		help = new JTextPane();
+		help.setText(text);
+		help.setBounds(0, 50 + ic.getIconHeight(), width, height);
+		help.setEditable(false);
+		help.setBackground(null);
+		help.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+  
+        SimpleAttributeSet bSet = new SimpleAttributeSet();
+        StyleConstants.setAlignment(bSet, StyleConstants.ALIGN_CENTER);
+        StyleConstants.setFontSize(bSet, 18);
+		StyledDocument doc = help.getStyledDocument();
+        doc.setParagraphAttributes(0, doc.getLength(), bSet, false);
+		
+		helpPanel = new JPanel();
+		helpPanel.setBounds(0, 0, width, height);
+		helpPanel.setLayout(null);
+		helpPanel.setVisible(false);
+		helpPanel.add(back);
+		helpPanel.add(help);
+		
 		viewPanel = new JPanel();
 		viewPanel.setBounds(0, 0, 800, 170);
 		viewPanel.setLayout(null);
@@ -140,6 +197,7 @@ public class Display {
 		
 		frame.getContentPane().add(viewPanel);
 		frame.getContentPane().add(panel);
+		frame.getContentPane().add(helpPanel);
 		
 		frame.setMinimumSize(new Dimension(width, height));
 		frame.setPreferredSize(new Dimension(width, height));
